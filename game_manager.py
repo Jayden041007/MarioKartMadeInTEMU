@@ -16,7 +16,7 @@ class GameManager:
         self.track = Track(self.screen_width, self.screen_height)
         self.players = [
             Player("Player 1", (50, 300), (0, 0, 255), "wasd", self.screen_width, self.screen_height),
-            Player("Player 2", (50, 350), (255, 0, 0), "arrows", self.screen_width, self.screen_height)
+            Player("Player 2", (80, 300), (255, 0, 0), "arrows", self.screen_width, self.screen_height)
         ]
 
     def run(self):
@@ -35,7 +35,7 @@ class GameManager:
 
     def update(self):
         for player in self.players:
-            player.update()
+            player.update(self.track)
 
     def render(self):
         self.screen.fill((0, 0, 0))  # Clear screen

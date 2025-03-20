@@ -10,14 +10,14 @@ class Player:
         self.screen_width = screen_width 
         self.screen_height = screen_height
 
-    def update(self):
+    def update(self, track):
         keys = pygame.key.get_pressed()
         if self.control_scheme == "wasd":
-            self.vehicle.move(keys, pygame.K_w, pygame.K_s, pygame.K_a, pygame.K_d)
+            self.vehicle.move(keys, pygame.K_w, pygame.K_s, pygame.K_a, pygame.K_d, track)
         else:
-            self.vehicle.move(keys, pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT)
+            self.vehicle.move(keys, pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT, track)
         
-        # Keep vehicle within screen boundaries
+        #Screen Boundaries
         if self.vehicle.x < 0:
             self.vehicle.x = 0
         elif self.vehicle.x > self.screen_width - self.vehicle.width:
