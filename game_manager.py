@@ -5,15 +5,18 @@ from track.track import Track
 class GameManager:
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((800, 600), pygame.FULLSCREEN)
+        info = pygame.display.Info()
+        self.screen_width = info.current_w
+        self.screen_height = info.current_h
+        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height), pygame.FULLSCREEN)
         pygame.display.set_caption("2D Racing Game")
         self.clock = pygame.time.Clock()
         self.running = True
 
-        self.track = Track()
+        self.track = Track(self.screen_width, self.screen_height)
         self.players = [
-            Player("Player 1", (50, 300), (0, 0, 255), "wasd"),
-            Player("Player 2", (50, 350), (255, 0, 0), "arrows")
+            Player("Player 1", (50, 300), (0, 0, 255), "wasd", self.screen_width, self.screen_height),
+            Player("Player 2", (50, 350), (255, 0, 0), "arrows", self.screen_width, self.screen_height)
         ]
 
     def run(self):

@@ -16,7 +16,9 @@ class Vehicle:
             self.x -= self.speed
         if keys[right]:
             self.x += self.speed
+        
 
+        
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
 
