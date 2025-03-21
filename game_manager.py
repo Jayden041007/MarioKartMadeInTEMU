@@ -16,7 +16,7 @@ class GameManager:
         self.track = Track(self.screen_width, self.screen_height)
         self.players = [
             Player("Player 1", (50, 300), (0, 0, 255), "wasd", self.screen_width, self.screen_height),
-            Player("Player 2", (80, 300), (255, 0, 0), "arrows", self.screen_width, self.screen_height)
+            Player("Player 2", (80, 300), (255, 0, 0), "arrows", self.screen_width, self.screen_height,)
         ]
 
     def run(self):

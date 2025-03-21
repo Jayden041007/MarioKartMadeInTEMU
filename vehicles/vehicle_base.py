@@ -29,6 +29,3 @@ class Vehicle:
         
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
-
-
-

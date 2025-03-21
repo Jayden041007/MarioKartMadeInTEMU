@@ -9,8 +9,15 @@ class _4WD(Vehicle):
     def move(self, keys, up, down, left, right, track):
         vehicle_rect = pygame.Rect(self.x, self.y, self.width, self.height)
         if track.slow_zone.colliderect(vehicle_rect):
-            self.speed = int(self.default_speed * self.slow_factor)
+            speed = int(self.default_speed * self.slow_factor)
         else:
-            self.speed = self.default_speed
+            speed = self.default_speed
 
-        super().move(keys, up, down,left,right)
+        if keys[up]:
+            self.y -= speed
+        if keys[down]:
+            self.y += speed
+        if keys[left]:
+            self.x -= speed
+        if keys[right]:
+            self.x += speed
