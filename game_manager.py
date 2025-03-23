@@ -38,7 +38,7 @@ class GameManager:
             player.update(self.track)
 
     def render(self):
-        self.screen.fill((0, 0, 0))  # Clear screen
+        self.screen.fill((0, 0, 0))  
         self.track.draw(self.screen)
         for player in self.players:
             player.draw(self.screen)

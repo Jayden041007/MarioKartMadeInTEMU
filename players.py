@@ -1,4 +1,3 @@
-# player.py - Handles player input and movement, and boundaries
 import pygame
 from vehicles.vehicle_base import Vehicle
 

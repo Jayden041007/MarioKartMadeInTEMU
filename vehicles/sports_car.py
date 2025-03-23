@@ -4,8 +4,8 @@ from vehicles.vehicle_base import Vehicle
 class SportsCar(Vehicle):
     def __init__(self, position, color):
         super().__init__(position, color)
-        self.speed_boost = 1.5  # 50% faster on track
-        self.slow_factor = 0.25  # 75% slower in slow zone
+        self.speed_boost = 1.5  
+        self.slow_factor = 0.25  
 
     def move(self, keys, up, down, left, right, track):
         vehicle_rect = pygame.Rect(self.x, self.y, self.width, self.height)
