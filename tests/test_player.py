@@ -7,14 +7,12 @@ class TestPlayer(unittest.TestCase):
         self.player = Player("TestPlayer", (100, 100), (255, 255, 255), "wasd", 800, 600)
     
     def test_player_initialization(self):
-        """Test if the player initializes correctly."""
         self.assertEqual(self.player.name, "TestPlayer")
         self.assertEqual(self.player.vehicle.x, 100)
         self.assertEqual(self.player.vehicle.y, 100)
         self.assertEqual(self.player.control_scheme, "wasd")
     
     def test_player_boundaries(self):
-        """Test if the player stays within screen boundaries."""
         self.player.vehicle.x = -10
         self.player.update(None)
         self.assertEqual(self.player.vehicle.x, 0)
@@ -30,6 +28,3 @@ class TestPlayer(unittest.TestCase):
         self.player.vehicle.y = 700
         self.player.update(None)
         self.assertEqual(self.player.vehicle.y, 600 - self.player.vehicle.height)
-
-if __name__ == "__main__":
-    unittest.main()

@@ -29,6 +29,3 @@ class TestGameManager(unittest.TestCase):
             self.game.render()
         except Exception as i:
             self.fail(f"Render method raised an exception: {i}")
-
-if __name__ == "__main__":
-    unittest.main()
