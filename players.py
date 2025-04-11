@@ -12,16 +12,16 @@ class Player:
         self.control_scheme = control_scheme
         self.screen_width = screen_width
         self.screen_height = screen_height
-        self.selected_car_index = None
+        self.selected_car_index = 0  # Default to the first car
         self.car_classes = [SportsCar, Truck, FourWheelDrive]
         self.vehicle = None
 
     def select_car(self, direction):
-        if self.selected_car_index is None:
-            self.selected_car_index = 0
-        else:
-            self.selected_car_index += direction
-            self.selected_car_index = max(0, min(self.selected_car_index, len(self.car_classes) - 1))
+        # Only change selection if it's within bounds
+        if direction == -1 and self.selected_car_index > 0:
+            self.selected_car_index -= 1
+        elif direction == 1 and self.selected_car_index < len(self.car_classes) - 1:
+            self.selected_car_index += 1
 
     def update(self, track):
         if self.vehicle:

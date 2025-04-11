@@ -23,6 +23,8 @@ class GameManager:
         self.car_options = ["Sports Car", "Truck", "4WD"]
         self.start_button_rect = None
         self.controls_button_rect = None
+        self.last_selection_change_time = 0
+        self.selection_change_delay = 200  # milliseconds
 
     def run(self):
         while self.running:
@@ -44,6 +46,37 @@ class GameManager:
                         self.current_screen = "car_selection"
                     elif self.controls_button_rect.collidepoint(mouse_pos):
                         self.current_screen = "controls"
+
+        # Handle key events for car selection
+        if self.current_screen == "car_selection":
+            current_time = pygame.time.get_ticks()
+            if current_time - self.last_selection_change_time > self.selection_change_delay:
+                keys = pygame.key.get_pressed()
+                # Player 1 controls
+                if keys[pygame.K_w]:
+                    self.players[0].select_car(-1)
+                    self.last_selection_change_time = current_time
+                if keys[pygame.K_s]:
+                    self.players[0].select_car(1)
+                    self.last_selection_change_time = current_time
+                # Player 2 controls
+                if keys[pygame.K_UP]:
+                    self.players[1].select_car(-1)
+                    self.last_selection_change_time = current_time
+                if keys[pygame.K_DOWN]:
+                    self.players[1].select_car(1)
+                    self.last_selection_change_time = current_time
+
+                # Check if both players have selected their cars
+                if keys[pygame.K_RETURN] and all(player.selected_car_index is not None for player in self.players):
+                    self.start_game()
+
+    def start_game(self):
+        # Load selected vehicles
+        for player in self.players:
+            selected_car_class = player.car_classes[player.selected_car_index]
+            player.vehicle = selected_car_class(player.position, player.color)
+        self.current_screen = "game"
 
     def update(self):
         if self.current_screen == "game":
@@ -88,10 +121,12 @@ class GameManager:
         self.screen.blit(player2_surface, (self.screen_width // 2 + 50, self.screen_height // 4))
 
         for i, car in enumerate(self.car_options):
+            # Highlight selected car for Player 1
             color1 = (255, 255, 0) if self.players[0].selected_car_index == i else (255, 255, 255)
             option_surface1 = font.render(car, True, color1)
             self.screen.blit(option_surface1, (50, self.screen_height // 2 + i * 50))
 
+            # Highlight selected car for Player 2
             color2 = (255, 255, 0) if self.players[1].selected_car_index == i else (255, 255, 255)
             option_surface2 = font.render(car, True, color2)
             self.screen.blit(option_surface2, (self.screen_width // 2 + 50, self.screen_height // 2 + i * 50))
