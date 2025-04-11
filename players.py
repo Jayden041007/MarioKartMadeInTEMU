@@ -1,32 +1,47 @@
 import pygame
 from vehicles.vehicle_base import Vehicle
+from vehicles.truck import Truck
+from vehicles._4wd import FourWheelDrive
+from vehicles.sports_car import SportsCar
 
 class Player:
     def __init__(self, name, position, color, control_scheme, screen_width, screen_height):
         self.name = name
-        self.vehicle = Vehicle(position, color)
+        self.position = position
+        self.color = color
         self.control_scheme = control_scheme
-        self.screen_width = screen_width 
+        self.screen_width = screen_width
         self.screen_height = screen_height
+        self.selected_car_index = None
+        self.car_classes = [SportsCar, Truck, FourWheelDrive]
+        self.vehicle = None
+
+    def select_car(self, direction):
+        if self.selected_car_index is None:
+            self.selected_car_index = 0
+        else:
+            self.selected_car_index += direction
+            self.selected_car_index = max(0, min(self.selected_car_index, len(self.car_classes) - 1))
 
     def update(self, track):
-        keys = pygame.key.get_pressed()
-        if self.control_scheme == "wasd":
-            self.vehicle.move(keys, pygame.K_w, pygame.K_s, pygame.K_a, pygame.K_d, track)
-        else:
-            self.vehicle.move(keys, pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT, track)
-        
-        #Screen Boundaries
-        if self.vehicle.x < 0:
-            self.vehicle.x = 0
-        elif self.vehicle.x > self.screen_width - self.vehicle.width:
-            self.vehicle.x = self.screen_width - self.vehicle.width
+        if self.vehicle:
+            keys = pygame.key.get_pressed()
+            if self.control_scheme == "wasd":
+                self.vehicle.move(keys, pygame.K_w, pygame.K_s, pygame.K_a, pygame.K_d, track)
+            else:
+                self.vehicle.move(keys, pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT, track)
 
-        if self.vehicle.y < 0:
-            self.vehicle.y = 0
-        elif self.vehicle.y > self.screen_height - self.vehicle.height:
-            self.vehicle.y = self.screen_height - self.vehicle.height
+            # Screen Boundaries
+            if self.vehicle.x < 0:
+                self.vehicle.x = 0
+            elif self.vehicle.x > self.screen_width - self.vehicle.width:
+                self.vehicle.x = self.screen_width - self.vehicle.width
 
+            if self.vehicle.y < 0:
+                self.vehicle.y = 0
+            elif self.vehicle.y > self.screen_height - self.vehicle.height:
+                self.vehicle.y = self.screen_height - self.vehicle.height
 
     def draw(self, screen):
-        self.vehicle.draw(screen)
+        if self.vehicle:
+            self.vehicle.draw(screen)
