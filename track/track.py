@@ -16,9 +16,8 @@ class Track:
 
         self.slow_zone = pygame.Rect(self.center_x, self.center_y, self.track_width, self.track_height)
 
-
         pygame.draw.rect(self.track_surface, (0, 103, 22), self.slow_zone, 12)
-        pygame.draw.line(self.track_surface,(0, 0, 0), (0, 280), (self.center_x, 280), 10)
+        pygame.draw.line(self.track_surface, (0, 0, 0), (0, 280), (self.center_x, 280), 10)  # Finish line
 
     def draw(self, screen):
         screen.blit(self.track_surface, (0, 0))

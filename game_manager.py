@@ -25,6 +25,7 @@ class GameManager:
         self.controls_button_rect = None
         self.last_selection_change_time = 0
         self.selection_change_delay = 200  # milliseconds
+        self.winner = None
 
     def run(self):
         while self.running:
@@ -46,6 +47,9 @@ class GameManager:
                         self.current_screen = "car_selection"
                     elif self.controls_button_rect.collidepoint(mouse_pos):
                         self.current_screen = "controls"
+            elif event.type == pygame.KEYDOWN:
+                if self.current_screen == "win" and event.key == pygame.K_r:
+                    self.reset_game()  # Reset the game
 
         # Handle key events for car selection
         if self.current_screen == "car_selection":
@@ -83,6 +87,14 @@ class GameManager:
             for player in self.players:
                 player.update(self.track)
 
+            # Check for win condition
+            if self.players[0].lap_count >= 3:
+                self.current_screen = "win"
+                self.winner = self.players[0].name
+            elif self.players[1].lap_count >= 3:
+                self.current_screen = "win"
+                self.winner = self.players[1].name
+
     def render(self):
         self.screen.fill((0, 0, 0))
         
@@ -96,8 +108,23 @@ class GameManager:
             self.track.draw(self.screen)
             for player in self.players:
                 player.draw(self.screen)
+            
+            self.render_lap_counts()  # Render lap counts
+        elif self.current_screen == "win":
+            self.render_win_screen(self.winner)  # Render win screen
 
         pygame.display.flip()
+
+    def render_lap_counts(self):
+        font = pygame.font.Font(None, 74)
+        player1_lap_surface = font.render(f"{self.players[0].name}: Laps - {self.players[0].lap_count}", True, (255, 255, 255))
+        player2_lap_surface = font.render(f"{self.players[1].name}: Laps - {self.players[1].lap_count}", True, (255, 255, 255))
+        
+        # Positioning for Player 1 on the left
+        self.screen.blit(player1_lap_surface, (50, 50))  # Adjust position as needed
+        
+        # Positioning for Player 2 on the right
+        self.screen.blit(player2_lap_surface, (self.screen_width - player2_lap_surface.get_width() - 50, 50))  # Adjust position as needed
 
     def render_home(self):
         font = pygame.font.Font(None, 74)
@@ -155,3 +182,19 @@ class GameManager:
             mouse_pos = pygame.mouse.get_pos()
             if back_button_rect.collidepoint(mouse_pos):
                 self.current_screen = "home"
+
+    def render_win_screen(self, winner):
+        font = pygame.font.Font(None, 74)
+        win_surface = font.render(f"{winner} wins!", True, (255, 255, 255))
+        restart_surface = font.render("Press R to Restart", True, (255, 255, 255))
+        
+        self.screen.fill((0, 0, 0))  # Clear the screen
+        self.screen.blit(win_surface, (self.screen_width // 2 - win_surface.get_width() // 2, self.screen_height // 4))
+        self.screen.blit(restart_surface, (self.screen_width // 2 - restart_surface.get_width() // 2, self.screen_height // 2))
+        
+        pygame.display.flip()  # Update the display
+
+    def reset_game(self):
+        self.players[0].lap_count = 0
+        self.players[1].lap_count = 0
+        self.current_screen = "car_selection"
