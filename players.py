@@ -12,11 +12,11 @@ class Player:
         self.control_scheme = control_scheme
         self.screen_width = screen_width
         self.screen_height = screen_height
-        self.selected_car_index = 0  # Default to the first car
+        self.selected_car_index = 0  
         self.car_classes = [SportsCar, Truck, FourWheelDrive]
         self.vehicle = None
-        self.lap_count = 0  # Initialize lap count
-        self.crossed_finish_line = False  # Track if the player has crossed the finish line
+        self.lap_count = -1  
+        self.crossed_finish_line = False 
 
     def select_car(self, direction):
         if direction == -1 and self.selected_car_index > 0:
@@ -34,7 +34,7 @@ class Player:
             elif self.control_scheme == "arrows":
                 up, down, left, right = pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT
             else:
-                return  # Invalid control scheme
+                return  
 
             self.vehicle.move(keys, up, down, left, right, track)
             self.check_finish_line(track)  # Check if the player crosses the finish line
@@ -51,12 +51,12 @@ class Player:
                 self.vehicle.y = self.screen_height - self.vehicle.height
 
     def check_finish_line(self, track):
-        finish_line_y = 280  # Y-coordinate of the finish line
+        finish_line_y = 280  
         if self.vehicle.y < finish_line_y and not self.crossed_finish_line:
-            self.lap_count += 1  # Increment lap count
-            self.crossed_finish_line = True  # Mark that the finish line has been crossed
+            self.lap_count += 1 
+            self.crossed_finish_line = True  
         elif self.vehicle.y >= finish_line_y:
-            self.crossed_finish_line = False  # Reset the flag when the vehicle is below the finish line
+            self.crossed_finish_line = False  
 
     def draw(self, screen):
         if self.vehicle:
